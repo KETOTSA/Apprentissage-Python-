@@ -16,8 +16,8 @@ Ce chapitre couvre :
 
 ## 📂 Fichiers
 
-- chapitre1.tex → Code source LaTeX
-- chapitre1.pdf → Version compilée
+- Python_Chapitre_1.tex → Code source LaTeX
+- Python_Chapitre_1.pdf → Version compilée
 
 ---
 
