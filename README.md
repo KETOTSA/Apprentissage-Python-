@@ -12,8 +12,8 @@ chapitre par chapitre, avec :
 ## 📚 Chapitres disponibles
 
 - ✅ Chapitre 01 – Introduction à Python
-- 🔄 Chapitre 02 – En cours de publication
-
+- 🔄✅ Chapitre 02 – Variables et types de données 
+- 🔄✅ Chapitre 03 - En cours
 ---
 
 ## 🎯 Objectif
@@ -23,5 +23,5 @@ et documenter chaque étape de manière rigoureuse.
 
 ---
 
-Auteur : Ketotsa Amévi Claude  
+Auteur : KETOTSA Amévi Claude  
 Année : 2026
