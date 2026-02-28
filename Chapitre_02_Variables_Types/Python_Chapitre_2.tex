@@ -1,0 +1,621 @@
+
+\documentclass[12pt, a4paper]{article}
+
+% ============================================================
+%  PACKAGES
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{mdframed}
+\usepackage{listings}
+\usepackage{fontawesome5}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, listings}
+
+\geometry{
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm
+}
+
+% ============================================================
+%  COULEURS
+% ============================================================
+\definecolor{bleuPrimaire}{HTML}{1A3C6E}
+\definecolor{bleuSecondaire}{HTML}{2E6DBD}
+\definecolor{bleuClair}{HTML}{EAF2FB}
+\definecolor{bleuAccent}{HTML}{4A90D9}
+\definecolor{grisTexte}{HTML}{2C3E50}
+\definecolor{grisClair}{HTML}{F4F6F9}
+\definecolor{vertCode}{HTML}{27AE60}
+\definecolor{orangeNote}{HTML}{E67E22}
+\definecolor{rougeImportant}{HTML}{E74C3C}
+\definecolor{codebg}{HTML}{1E2A3A}
+\definecolor{codetext}{HTML}{ECF0F1}
+
+% ============================================================
+%  STYLE DE CODE
+% ============================================================
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small\color{codetext},
+  keywordstyle=\color{bleuAccent}\bfseries,
+  stringstyle=\color{vertCode},
+  commentstyle=\color{gray}\itshape,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  numbersep=8pt,
+  stepnumber=1,
+  showstringspaces=false,
+  breaklines=true,
+  frame=none,
+  tabsize=4,
+  captionpos=b,
+  morekeywords={print, input, type, int, float, str, bool, True, False}
+}
+
+% ============================================================
+%  EN-TÊTE ET PIED DE PAGE
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuPrimaire] (0,0) rectangle (\paperwidth, 1.1cm);
+  \end{tikzpicture}%
+  \color{white}\small\textbf{Cours Python — Mon Apprentissage}
+}
+\fancyhead[R]{\color{white}\small\textbf{Chapitre 2 : Variables et Types de Données}}
+\fancyfoot[C]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuClair] (0,0) rectangle (\paperwidth, 0.7cm);
+    \draw[bleuSecondaire, line width=1pt] (0, 0.7cm) -- (\paperwidth, 0.7cm);
+  \end{tikzpicture}%
+  \color{bleuPrimaire}\small\thepage
+}
+
+% ============================================================
+%  STYLE DES TITRES
+% ============================================================
+\titleformat{\section}{%
+  \color{bleuPrimaire}\Large\bfseries
+}{}{0em}{}[\vspace{-0.3em}\textcolor{bleuSecondaire}{\rule{\linewidth}{1.5pt}}]
+
+\titleformat{\subsection}{%
+  \color{bleuSecondaire}\large\bfseries
+}{}{0em}{}
+
+\titlespacing{\section}{0pt}{1.5em}{0.8em}
+\titlespacing{\subsection}{0pt}{1em}{0.5em}
+
+% ============================================================
+%  BOÎTES PERSONNALISÉES
+% ============================================================
+\newtcolorbox{boiteRetenir}{
+  enhanced, breakable,
+  colback=bleuClair, colframe=bleuSecondaire,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faLightbulb\quad À retenir},
+  fonttitle=\bfseries\color{bleuPrimaire},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=bleuClair, colframe=bleuSecondaire}
+}
+
+\newtcolorbox{boiteNote}{
+  enhanced, breakable,
+  colback=orange!8, colframe=orangeNote,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faExclamationTriangle\quad Note importante},
+  fonttitle=\bfseries\color{orangeNote},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=orange!8, colframe=orangeNote}
+}
+
+\newtcolorbox{boiteErreur}{
+  enhanced, breakable,
+  colback=red!5, colframe=rougeImportant,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faBug\quad Erreur fréquente},
+  fonttitle=\bfseries\color{rougeImportant},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=red!5, colframe=rougeImportant}
+}
+
+\newtcblisting{codeblock}[1]{
+  enhanced, breakable,
+  listing only,
+  listing style=pythonstyle,
+  colback=codebg, colframe=bleuSecondaire,
+  arc=6pt, boxrule=1pt,
+  title={\faCode\quad #1},
+  fonttitle=\bfseries\color{white}\small,
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=bleuSecondaire, colframe=bleuSecondaire},
+  left=6pt, right=6pt, top=8pt, bottom=6pt
+}
+
+% ============================================================
+%  PAGE DE TITRE
+% ============================================================
+\begin{document}
+
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuPrimaire] (current page.north west) rectangle
+      ([yshift=-10cm] current page.north east);
+    \fill[bleuSecondaire] ([yshift=-10cm] current page.north west) rectangle
+      ([yshift=-11cm] current page.north east);
+    \fill[grisClair] ([yshift=-11cm] current page.north west) rectangle
+      (current page.south east);
+    \fill[bleuAccent, opacity=0.15]
+      ([xshift=12cm, yshift=-5cm] current page.north west) circle (5cm);
+    \fill[bleuAccent, opacity=0.08]
+      ([xshift=15cm, yshift=-3cm] current page.north west) circle (3cm);
+  \end{tikzpicture}
+
+  \vspace*{2cm}
+
+  \begin{center}
+    {\fontsize{14}{16}\selectfont\color{bleuClair}
+      \textbf{MON APPRENTISSAGE — SERIES PYTHON}}\\[0.5cm]
+    {\fontsize{42}{48}\selectfont\color{white}\textbf{Python}}\\[0.2cm]
+    {\fontsize{20}{24}\selectfont\color{bleuAccent}
+      \textbf{Du zéro à l'expert}}\\[0.3cm]
+    \textcolor{white!70}{\rule{8cm}{0.5pt}}\\[0.5cm]
+    {\fontsize{16}{20}\selectfont\color{white}
+      \textbf{Chapitre 2 — Variables et Types de Données}}\\[0.2cm]
+    {\fontsize{13}{16}\selectfont\color{bleuClair}
+      \textit{Comprendre comment Python stocke l'information}}
+  \end{center}
+
+  \vspace{3.5cm}
+
+  \begin{center}
+    \begin{tikzpicture}
+      \fill[bleuClair, rounded corners=8pt] (0,0) rectangle (12cm, 3.2cm);
+      \draw[bleuSecondaire, line width=1.5pt, rounded corners=8pt]
+        (0,0) rectangle (12cm, 3.2cm);
+      \node[anchor=west] at (0.4, 2.5)
+        {\color{bleuPrimaire}\small\textbf{Auteur :}};
+      \node[anchor=west] at (0.4, 1.9)
+        {\color{grisTexte}\large\textbf{KETOTSA AMÉVI CLAUDE}};
+      \node[anchor=west] at (0.4, 1.2)
+        {\color{bleuPrimaire}\small\textbf{Date de publication :}};
+      \node[anchor=west] at (0.4, 0.6)
+        {\color{grisTexte}\small\today};
+    \end{tikzpicture}
+  \end{center}
+
+  \vfill
+  \begin{center}
+    \color{bleuSecondaire}\small\faLinkedin\quad
+    \textit{Publié dans le cadre de mon parcours d'apprentissage Python}
+  \end{center}
+\end{titlepage}
+
+% ============================================================
+%  TABLE DES MATIÈRES
+% ============================================================
+\newpage
+\tableofcontents
+\newpage
+
+% ============================================================
+%  CHAPITRE 2
+% ============================================================
+
+\section*{\faPython\quad Chapitre 2 — Variables et Types de Données}
+\addcontentsline{toc}{section}{Chapitre 2 — Variables et Types de Données}
+
+\vspace{0.3cm}
+
+\begin{boiteRetenir}
+Dans ce chapitre, je découvre comment Python \textbf{stocke et manipule l'information}.
+Les variables sont les briques fondamentales de tout programme.
+Comprendre les types de données, c'est comprendre comment Python pense.
+\end{boiteRetenir}
+
+\vspace{0.5cm}
+
+% -----------------------------------------------------------
+\subsection{Qu'est-ce qu'une variable ?}
+
+Une variable, c'est comme une \textbf{boîte avec une étiquette}. On donne un nom à cette boîte, on y met une valeur, et on peut la retrouver plus tard grâce à son nom.
+
+En Python, créer une variable est d'une simplicité totale — pas besoin de déclarer le type, Python s'en charge automatiquement.
+
+\begin{codeblock}{Mes premières variables}
+# Creer des variables aussi simple que ca
+prenom = "Alice"
+age = 25
+taille = 1.68
+est_etudiant = True
+
+# Afficher les valeurs
+print(prenom)        # Alice
+print(age)           # 25
+print(taille)        # 1.68
+print(est_etudiant)  # True
+\end{codeblock}
+
+\begin{boiteNote}
+En Python, on n'écrit \textbf{jamais} le type de la variable avant son nom.
+Pas de \texttt{int age = 25} comme en Java ou C++.
+On écrit simplement \texttt{age = 25} et Python comprend tout seul.
+\end{boiteNote}
+
+% -----------------------------------------------------------
+\subsection{Les règles de nommage des variables}
+
+Nommer une variable n'est pas totalement libre. Python impose quelques règles :
+
+\begin{center}
+\begin{tikzpicture}
+  % Colonne AUTORISÉ
+  \fill[vertCode!10, rounded corners=6pt] (0,0) rectangle (6.5, 5.5);
+  \draw[vertCode, line width=1.5pt, rounded corners=6pt] (0,0) rectangle (6.5,5.5);
+  \node[font=\bfseries\small, text=vertCode] at (3.25, 5.1)
+    {\faCheckCircle\quad AUTORISÉ};
+  \node[font=\ttfamily\small, text=grisTexte, align=left] at (3.25, 3.8)
+    {mon\_prenom};
+  \node[font=\ttfamily\small, text=grisTexte, align=left] at (3.25, 3.1)
+    {age2};
+  \node[font=\ttfamily\small, text=grisTexte, align=left] at (3.25, 2.4)
+    {\_variable\_privee};
+  \node[font=\ttfamily\small, text=grisTexte, align=left] at (3.25, 1.7)
+    {nomDeVariable};
+  \node[font=\ttfamily\small, text=grisTexte, align=left] at (3.25, 1.0)
+    {CONSTANTE};
+
+  % Colonne INTERDIT
+  \fill[red!8, rounded corners=6pt] (7,0) rectangle (13.5, 5.5);
+  \draw[rougeImportant, line width=1.5pt, rounded corners=6pt]
+    (7,0) rectangle (13.5,5.5);
+  \node[font=\bfseries\small, text=rougeImportant] at (10.25, 5.1)
+    {\faTimesCircle\quad INTERDIT};
+  \node[font=\ttfamily\small, text=grisTexte] at (10.25, 3.8)
+    {2age \quad (commence par un chiffre)};
+  \node[font=\ttfamily\small, text=grisTexte] at (10.25, 3.1)
+    {mon-prenom \quad (tiret interdit)};
+  \node[font=\ttfamily\small, text=grisTexte] at (10.25, 2.4)
+    {mon prenom \quad (espace interdit)};
+  \node[font=\ttfamily\small, text=grisTexte] at (10.25, 1.7)
+    {class \quad (mot réservé Python)};
+  \node[font=\ttfamily\small, text=grisTexte] at (10.25, 1.0)
+    {prénom \quad (accents déconseillés)};
+\end{tikzpicture}
+\end{center}
+
+% -----------------------------------------------------------
+\subsection{Les 4 types de base en Python}
+
+Python possède 4 types fondamentaux que tout développeur doit maîtriser :
+
+\vspace{0.5cm}
+
+\begin{center}
+\begin{tikzpicture}
+  \foreach \type/\desc/\exemple/\couleur/\pos in {
+    {int}/{Nombres entiers}/{42, -10, 0}/{bleuPrimaire}/0,
+    {float}/{Nombres décimaux}/{3.14, -0.5, 1.0}/{bleuSecondaire}/3.5,
+    {str}/{Chaînes de texte}/{"Bonjour", "Python"}/{vertCode}/7,
+    {bool}/{Vrai ou Faux}/{True, False}/{orangeNote}/10.5
+  }{
+    \fill[\couleur!15, rounded corners=6pt]
+      (\pos, 0) rectangle (\pos+3, 3.5);
+    \draw[\couleur, line width=1.5pt, rounded corners=6pt]
+      (\pos, 0) rectangle (\pos+3, 3.5);
+    \node[font=\bfseries, text=\couleur] at (\pos+1.5, 3.1)
+      {\type};
+    \node[font=\small, text=grisTexte, align=center] at (\pos+1.5, 2.3)
+      {\desc};
+    \draw[\couleur!40, dashed] (\pos+0.2, 1.8) -- (\pos+2.8, 1.8);
+    \node[font=\ttfamily\tiny, text=grisTexte, align=center]
+      at (\pos+1.5, 1.1) {\exemple};
+  }
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{codeblock}{Les 4 types fondamentaux en action}
+# int — nombre entier
+nombre_entier = 42
+annee = 2024
+temperature_negative = -15
+
+# float — nombre decimal
+pi = 3.14159
+prix = 19.99
+note = -0.5
+
+# str — chaine de caracteres
+prenom = "Alice"
+message = 'Bonjour tout le monde !'
+phrase = "J'apprends Python aujourd'hui"
+
+# bool — booleen (vrai ou faux)
+est_connecte = True
+a_paye = False
+majeur = True
+
+# Verifier le type avec type()
+print(type(nombre_entier))   # <class 'int'>
+print(type(pi))              # <class 'float'>
+print(type(prenom))          # <class 'str'>
+print(type(est_connecte))    # <class 'bool'>
+\end{codeblock}
+
+% -----------------------------------------------------------
+\subsection{Le type int — Les entiers}
+
+Le type \texttt{int} représente tous les nombres entiers, positifs ou négatifs, sans limite de taille en Python.
+
+\begin{codeblock}{Travailler avec les entiers}
+# Declarations
+population_monde = 8_000_000_000   # underscore pour lisibilite
+temperature_lune = -173
+etage = 0
+
+# Operations de base
+a = 10
+b = 3
+
+print(a + b)   # Addition      → 13
+print(a - b)   # Soustraction  → 7
+print(a * b)   # Multiplication → 30
+print(a // b)  # Division entière → 3
+print(a % b)   # Modulo (reste) → 1
+print(a ** b)  # Puissance     → 1000
+\end{codeblock}
+
+\begin{boiteRetenir}
+En Python, on peut utiliser des \textbf{underscores} dans les grands nombres pour les rendre plus lisibles : \texttt{1\_000\_000} est identique à \texttt{1000000}.
+\end{boiteRetenir}
+
+% -----------------------------------------------------------
+\subsection{Le type float — Les décimaux}
+
+Le type \texttt{float} représente les nombres à virgule flottante (décimaux).
+
+\begin{codeblock}{Travailler avec les décimaux}
+# Declarations
+prix_cafe = 2.50
+taux_tva = 0.20
+gravite = 9.81
+
+# Calcul du prix TTC
+prix_ht = 100.0
+prix_ttc = prix_ht * (1 + taux_tva)
+print(prix_ttc)   # 120.0
+
+# Attention à la precision des floats !
+print(0.1 + 0.2)  # 0.30000000000000004 (pas 0.3 !)
+
+# Solution : arrondir avec round()
+print(round(0.1 + 0.2, 2))  # 0.3
+\end{codeblock}
+
+\begin{boiteErreur}
+Les \texttt{float} ne sont pas toujours précis à cause de la représentation binaire.
+\texttt{0.1 + 0.2} ne donne pas exactement \texttt{0.3} en Python.
+Utilisez \texttt{round()} pour arrondir vos résultats.
+\end{boiteErreur}
+
+% -----------------------------------------------------------
+\subsection{Le type str — Les chaînes de caractères}
+
+Le type \texttt{str} (string) représente du texte. On peut utiliser des guillemets simples ou doubles.
+
+\begin{codeblock}{Travailler avec les chaînes de caractères}
+# Declarations
+prenom = "Alice"
+ville = 'Paris'
+message = "J'habite a Paris"   # guillemets doubles si apostrophe
+
+# Concatenation (assembler des chaines)
+nom_complet = "Alice" + " " + "Dupont"
+print(nom_complet)   # Alice Dupont
+
+# f-string — la methode moderne et recommandee
+age = 25
+presentation = f"Je m'appelle {prenom} et j'ai {age} ans."
+print(presentation)  # Je m'appelle Alice et j'ai 25 ans.
+
+# Longueur d'une chaine
+print(len(prenom))   # 5
+
+# Acceder a un caractere (index commence a 0)
+print(prenom[0])     # A
+print(prenom[-1])    # e (dernier caractere)
+
+# Mettre en majuscules / minuscules
+print(prenom.upper())   # ALICE
+print(prenom.lower())   # alice
+\end{codeblock}
+
+% -----------------------------------------------------------
+\subsection{Le type bool — Les booléens}
+
+Le type \texttt{bool} n'a que deux valeurs possibles : \texttt{True} ou \texttt{False}. Il est fondamental pour les conditions et la logique.
+
+\begin{codeblock}{Travailler avec les booléens}
+# Declarations
+est_majeur = True
+est_connecte = False
+
+# Les comparaisons retournent des booleens
+age = 20
+print(age >= 18)    # True
+print(age == 15)    # False
+print(age != 18)    # True
+
+# Operateurs logiques
+a = True
+b = False
+print(a and b)   # False (les deux doivent etre True)
+print(a or b)    # True  (au moins un doit etre True)
+print(not a)     # False (inverse la valeur)
+
+# Exemple concret
+a_un_compte = True
+a_paye = False
+peut_acceder = a_un_compte and a_paye
+print(peut_acceder)   # False
+\end{codeblock}
+
+% -----------------------------------------------------------
+\subsection{Le typage dynamique de Python}
+
+Python est un langage à \textbf{typage dynamique} : une variable peut changer de type en cours de programme. Python détecte automatiquement le type selon la valeur assignée.
+
+\begin{codeblock}{Le typage dynamique en action}
+# Une variable peut changer de type
+x = 10
+print(type(x))   # <class 'int'>
+
+x = 3.14
+print(type(x))   # <class 'float'>
+
+x = "Bonjour"
+print(type(x))   # <class 'str'>
+
+x = True
+print(type(x))   # <class 'bool'>
+
+# Python s'adapte à chaque fois — pas d'erreur !
+\end{codeblock}
+
+\begin{boiteNote}
+Le typage dynamique est une \textbf{force} de Python — il rend le code plus rapide à écrire. Mais il demande aussi d'être rigoureux pour ne pas mélanger les types sans le vouloir.
+\end{boiteNote}
+
+% -----------------------------------------------------------
+\subsection{La conversion de types — Casting}
+
+On peut convertir un type en un autre grâce aux fonctions de conversion :
+
+\begin{codeblock}{Conversion de types (casting)}
+# str → int
+age_texte = "25"
+age_nombre = int(age_texte)
+print(age_nombre + 5)   # 30
+
+# int → float
+nombre = 10
+print(float(nombre))    # 10.0
+
+# float → int (attention : tronque la decimale !)
+pi = 3.99
+print(int(pi))          # 3  (pas 4 !)
+
+# int → str
+annee = 2024
+message = "Nous sommes en " + str(annee)
+print(message)          # Nous sommes en 2024
+
+# Recuperer une saisie utilisateur (toujours du str !)
+# age = input("Ton age : ")    → renvoie toujours une str
+# age = int(input("Ton age : ")) → convertir en int
+\end{codeblock}
+
+\begin{boiteErreur}
+\texttt{input()} retourne \textbf{toujours une chaîne de caractères} (str), même si l'utilisateur tape un nombre.
+Il faut toujours convertir avec \texttt{int()} ou \texttt{float()} si vous voulez faire des calculs.
+\end{boiteErreur}
+
+% -----------------------------------------------------------
+\subsection{Les variables multiples}
+
+Python permet d'assigner plusieurs variables en une seule ligne, ce qui est très élégant :
+
+\begin{codeblock}{Assignations multiples}
+# Assigner la meme valeur a plusieurs variables
+x = y = z = 0
+print(x, y, z)   # 0 0 0
+
+# Assigner plusieurs valeurs en une ligne
+prenom, nom, age = "Alice", "Dupont", 25
+print(prenom)   # Alice
+print(nom)      # Dupont
+print(age)      # 25
+
+# Echanger deux variables (unique a Python !)
+a = 10
+b = 20
+a, b = b, a
+print(a, b)   # 20 10
+\end{codeblock}
+
+\begin{boiteRetenir}
+Échanger deux variables avec \texttt{a, b = b, a} est une syntaxe \textbf{unique à Python}. Dans d'autres langages, il faut une variable temporaire. Python fait ça en une ligne. Élégant.
+\end{boiteRetenir}
+
+% -----------------------------------------------------------
+\subsection{Résumé du Chapitre 2}
+
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colback=bleuPrimaire,
+  colframe=bleuPrimaire,
+  arc=8pt,
+  left=15pt, right=15pt, top=10pt, bottom=10pt
+]
+  \color{white}
+  \textbf{\large\faClipboardList\quad Ce que j'ai appris dans ce chapitre :}
+
+  \vspace{0.5em}
+  \begin{itemize}[leftmargin=1.5em, itemsep=6pt]
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Une variable est une boîte nommée qui stocke une valeur.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Les 4 types de base : \texttt{int}, \texttt{float}, \texttt{str}, \texttt{bool}.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Python est à typage dynamique — il détecte le type automatiquement.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      \texttt{type()} permet de connaître le type d'une variable à tout moment.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Le casting (\texttt{int()}, \texttt{float()}, \texttt{str()}) permet de convertir les types.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      \texttt{input()} retourne toujours une \texttt{str} — toujours convertir pour les calculs.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Python permet d'échanger deux variables en une ligne : \texttt{a, b = b, a}.
+  \end{itemize}
+
+  \vspace{0.5em}
+  \textit{\textcolor{bleuClair}{"Les données sont la matière première du XXIe siècle.
+  Savoir les manipuler, c'est savoir construire."}}
+\end{tcolorbox}
+
+% -----------------------------------------------------------
+\vspace{1cm}
+\begin{center}
+  \begin{tikzpicture}
+    \fill[bleuClair, rounded corners=6pt] (0,0) rectangle (16, 1.5);
+    \draw[bleuSecondaire, line width=1pt, rounded corners=6pt]
+      (0,0) rectangle (16, 1.5);
+    \node[font=\small, text=bleuPrimaire] at (8, 0.75) {%
+      \faLinkedin\quad \textbf{KETOTSA AMÉVI CLAUDE} — Mon apprentissage Python
+      \quad|\quad Chapitre 2 sur 34
+    };
+  \end{tikzpicture}
+\end{center}
+
+\end{document}
