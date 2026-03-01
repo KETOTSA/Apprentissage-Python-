@@ -1,0 +1,595 @@
+
+\documentclass[12pt, a4paper]{article}
+
+% ============================================================
+%  PACKAGES
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{mdframed}
+\usepackage{listings}
+\usepackage{fontawesome5}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, listings}
+
+\geometry{
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm
+}
+
+% ============================================================
+%  COULEURS
+% ============================================================
+\definecolor{bleuPrimaire}{HTML}{1A3C6E}
+\definecolor{bleuSecondaire}{HTML}{2E6DBD}
+\definecolor{bleuClair}{HTML}{EAF2FB}
+\definecolor{bleuAccent}{HTML}{4A90D9}
+\definecolor{grisTexte}{HTML}{2C3E50}
+\definecolor{grisClair}{HTML}{F4F6F9}
+\definecolor{vertCode}{HTML}{27AE60}
+\definecolor{orangeNote}{HTML}{E67E22}
+\definecolor{rougeImportant}{HTML}{E74C3C}
+\definecolor{codebg}{HTML}{1E2A3A}
+\definecolor{codetext}{HTML}{ECF0F1}
+
+% ============================================================
+%  STYLE DE CODE
+% ============================================================
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small\color{codetext},
+  keywordstyle=\color{bleuAccent}\bfseries,
+  stringstyle=\color{vertCode},
+  commentstyle=\color{gray}\itshape,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  numbersep=8pt,
+  stepnumber=1,
+  showstringspaces=false,
+  breaklines=true,
+  frame=none,
+  tabsize=4,
+  captionpos=b,
+  morekeywords={print, input, type, int, float, str, bool, True, False, and, or, not}
+}
+
+% ============================================================
+%  EN-TÊTE ET PIED DE PAGE
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuPrimaire] (0,0) rectangle (\paperwidth, 1.1cm);
+  \end{tikzpicture}%
+  \color{white}\small\textbf{Cours Python — Mon Apprentissage}
+}
+\fancyhead[R]{\color{white}\small\textbf{Chapitre 3 : Les Opérateurs}}
+\fancyfoot[C]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuClair] (0,0) rectangle (\paperwidth, 0.7cm);
+    \draw[bleuSecondaire, line width=1pt] (0, 0.7cm) -- (\paperwidth, 0.7cm);
+  \end{tikzpicture}%
+  \color{bleuPrimaire}\small\thepage
+}
+
+% ============================================================
+%  STYLE DES TITRES
+% ============================================================
+\titleformat{\section}{%
+  \color{bleuPrimaire}\Large\bfseries
+}{}{0em}{}[\vspace{-0.3em}\textcolor{bleuSecondaire}{\rule{\linewidth}{1.5pt}}]
+
+\titleformat{\subsection}{%
+  \color{bleuSecondaire}\large\bfseries
+}{}{0em}{}
+
+\titlespacing{\section}{0pt}{1.5em}{0.8em}
+\titlespacing{\subsection}{0pt}{1em}{0.5em}
+
+% ============================================================
+%  BOÎTES PERSONNALISÉES
+% ============================================================
+\newtcolorbox{boiteRetenir}{
+  enhanced, breakable,
+  colback=bleuClair, colframe=bleuSecondaire,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faLightbulb\quad À retenir},
+  fonttitle=\bfseries\color{bleuPrimaire},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=bleuClair, colframe=bleuSecondaire}
+}
+
+\newtcolorbox{boiteNote}{
+  enhanced, breakable,
+  colback=orange!8, colframe=orangeNote,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faExclamationTriangle\quad Note importante},
+  fonttitle=\bfseries\color{orangeNote},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=orange!8, colframe=orangeNote}
+}
+
+\newtcolorbox{boiteErreur}{
+  enhanced, breakable,
+  colback=red!5, colframe=rougeImportant,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faBug\quad Erreur fréquente},
+  fonttitle=\bfseries\color{rougeImportant},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=red!5, colframe=rougeImportant}
+}
+
+\newtcblisting{codeblock}[1]{
+  enhanced, breakable,
+  listing only,
+  listing style=pythonstyle,
+  colback=codebg, colframe=bleuSecondaire,
+  arc=6pt, boxrule=1pt,
+  title={\faCode\quad #1},
+  fonttitle=\bfseries\color{white}\small,
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=bleuSecondaire, colframe=bleuSecondaire},
+  left=6pt, right=6pt, top=8pt, bottom=6pt
+}
+
+% ============================================================
+%  PAGE DE TITRE
+% ============================================================
+\begin{document}
+
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuPrimaire] (current page.north west) rectangle
+      ([yshift=-10cm] current page.north east);
+    \fill[bleuSecondaire] ([yshift=-10cm] current page.north west) rectangle
+      ([yshift=-11cm] current page.north east);
+    \fill[grisClair] ([yshift=-11cm] current page.north west) rectangle
+      (current page.south east);
+    \fill[bleuAccent, opacity=0.15]
+      ([xshift=12cm, yshift=-5cm] current page.north west) circle (5cm);
+    \fill[bleuAccent, opacity=0.08]
+      ([xshift=15cm, yshift=-3cm] current page.north west) circle (3cm);
+  \end{tikzpicture}
+
+  \vspace*{2cm}
+
+  \begin{center}
+    {\fontsize{14}{16}\selectfont\color{bleuClair}
+      \textbf{MON APPRENTISSAGE — SERIES PYTHON}}\\[0.5cm]
+    {\fontsize{42}{48}\selectfont\color{white}\textbf{Python}}\\[0.2cm]
+    {\fontsize{20}{24}\selectfont\color{bleuAccent}
+      \textbf{Du zéro à l'expert}}\\[0.3cm]
+    \textcolor{white!70}{\rule{8cm}{0.5pt}}\\[0.5cm]
+    {\fontsize{16}{20}\selectfont\color{white}
+      \textbf{Chapitre 3 — Les Opérateurs}}\\[0.2cm]
+    {\fontsize{13}{16}\selectfont\color{bleuClair}
+      \textit{Les outils qui donnent vie aux calculs et à la logique}}
+  \end{center}
+
+  \vspace{3.5cm}
+
+  \begin{center}
+    \begin{tikzpicture}
+      \fill[bleuClair, rounded corners=8pt] (0,0) rectangle (12cm, 3.2cm);
+      \draw[bleuSecondaire, line width=1.5pt, rounded corners=8pt]
+        (0,0) rectangle (12cm, 3.2cm);
+      \node[anchor=west] at (0.4, 2.5)
+        {\color{bleuPrimaire}\small\textbf{Auteur :}};
+      \node[anchor=west] at (0.4, 1.9)
+        {\color{grisTexte}\large\textbf{KETOTSA AMÉVI CLAUDE}};
+      \node[anchor=west] at (0.4, 1.2)
+        {\color{bleuPrimaire}\small\textbf{Date de publication :}};
+      \node[anchor=west] at (0.4, 0.6)
+        {\color{grisTexte}\small\today};
+    \end{tikzpicture}
+  \end{center}
+
+  \vfill
+  \begin{center}
+    \color{bleuSecondaire}\small\faLinkedin\quad
+    \textit{Publié dans le cadre de mon parcours d'apprentissage Python}
+  \end{center}
+\end{titlepage}
+
+% ============================================================
+%  TABLE DES MATIÈRES
+% ============================================================
+\newpage
+\tableofcontents
+\newpage
+
+% ============================================================
+%  CHAPITRE 3
+% ============================================================
+
+\section*{\faPython\quad Chapitre 3 — Les Opérateurs}
+\addcontentsline{toc}{section}{Chapitre 3 — Les Opérateurs}
+
+\vspace{0.3cm}
+
+\begin{boiteRetenir}
+Les opérateurs sont les \textbf{outils fondamentaux} de Python. Ils permettent d'effectuer des calculs, de comparer des valeurs, de combiner des conditions et de modifier des variables. Sans eux, un programme ne peut rien décider, rien calculer, rien produire.
+\end{boiteRetenir}
+
+\vspace{0.5cm}
+
+% -----------------------------------------------------------
+\subsection{Les opérateurs arithmétiques}
+
+Les opérateurs arithmétiques permettent d'effectuer des \textbf{calculs mathématiques} de base.
+
+\begin{center}
+\begin{tikzpicture}
+  \foreach \op/\nom/\exemple/\pos in {
+    {+}/{Addition}/{5 + 3 = 8}/0,
+    {-}/{Soustraction}/{5 - 3 = 2}/3.2,
+    {*}/{Multiplication}/{5 * 3 = 15}/6.4,
+    {/}/{Division}/{5 / 2 = 2.5}/9.6
+  }{
+    \fill[bleuClair, rounded corners=5pt] (\pos, 0) rectangle (\pos+2.8, 2.5);
+    \draw[bleuSecondaire, line width=1pt, rounded corners=5pt]
+      (\pos, 0) rectangle (\pos+2.8, 2.5);
+    \node[font=\bfseries\Large, text=bleuPrimaire] at (\pos+1.4, 2.0) {\op};
+    \node[font=\small\bfseries, text=bleuSecondaire] at (\pos+1.4, 1.4) {\nom};
+    \node[font=\ttfamily\tiny, text=grisTexte] at (\pos+1.4, 0.7) {\exemple};
+  }
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.4cm}
+
+\begin{center}
+\begin{tikzpicture}
+  \foreach \op/\nom/\exemple/\pos in {
+    {//}/{Division entière}/{5 // 2 = 2}/0,
+    {\%}/{Modulo (reste)}/{5 \% 2 = 1}/3.2,
+    {**}/{Puissance}/{2 ** 8 = 256}/6.4
+  }{
+    \fill[bleuPrimaire!10, rounded corners=5pt] (\pos, 0) rectangle (\pos+2.8, 2.5);
+    \draw[bleuPrimaire, line width=1pt, rounded corners=5pt]
+      (\pos, 0) rectangle (\pos+2.8, 2.5);
+    \node[font=\bfseries\Large, text=bleuPrimaire] at (\pos+1.4, 2.0) {\op};
+    \node[font=\small\bfseries, text=bleuSecondaire] at (\pos+1.4, 1.4) {\nom};
+    \node[font=\ttfamily\tiny, text=grisTexte] at (\pos+1.4, 0.7) {\exemple};
+  }
+\end{tikzpicture}
+\end{center}
+
+\begin{codeblock}{Opérateurs arithmétiques en action}
+a = 17
+b = 5
+
+print(a + b)    # Addition         → 22
+print(a - b)    # Soustraction     → 12
+print(a * b)    # Multiplication   → 85
+print(a / b)    # Division reelle  → 3.4
+print(a // b)   # Division entiere → 3
+print(a % b)    # Modulo (reste)   → 2
+print(a ** b)   # Puissance        → 1419857
+
+# Exemple concret : calculer le prix TTC
+prix_ht = 200
+tva = 0.20
+prix_ttc = prix_ht * (1 + tva)
+print(f"Prix TTC : {prix_ttc} €")   # Prix TTC : 240.0 €
+\end{codeblock}
+
+\begin{boiteRetenir}
+Le \textbf{modulo} \texttt{\%} est très utile en programmation : il permet de savoir si un nombre est pair ou impair, de créer des cycles, ou de limiter des valeurs dans un intervalle.
+\texttt{nombre \% 2 == 0} → le nombre est pair.
+\end{boiteRetenir}
+
+% -----------------------------------------------------------
+\subsection{Les opérateurs de comparaison}
+
+Les opérateurs de comparaison \textbf{comparent deux valeurs} et retournent toujours un booléen : \texttt{True} ou \texttt{False}.
+
+\begin{codeblock}{Opérateurs de comparaison}
+a = 10
+b = 20
+
+print(a == b)   # Egal a           → False
+print(a != b)   # Different de     → True
+print(a < b)    # Inferieur a      → True
+print(a > b)    # Superieur a      → False
+print(a <= b)   # Inferieur ou egal → True
+print(a >= b)   # Superieur ou egal → False
+
+# Comparer des chaines
+prenom1 = "Alice"
+prenom2 = "Bob"
+print(prenom1 == prenom2)   # False
+print(prenom1 != prenom2)   # True
+
+# Exemple concret : verifier l'age
+age = 17
+est_majeur = age >= 18
+print(est_majeur)   # False
+\end{codeblock}
+
+\begin{boiteErreur}
+Ne confondez jamais \texttt{=} et \texttt{==} !
+\texttt{=} est une \textbf{assignation} (on donne une valeur à une variable).
+\texttt{==} est une \textbf{comparaison} (on vérifie si deux valeurs sont égales).
+C'est l'une des erreurs les plus fréquentes chez les débutants.
+\end{boiteErreur}
+
+% -----------------------------------------------------------
+\subsection{Les opérateurs logiques}
+
+Les opérateurs logiques permettent de \textbf{combiner plusieurs conditions} ensemble.
+
+\begin{center}
+\begin{tikzpicture}
+  % and
+  \fill[bleuClair, rounded corners=6pt] (0, 0) rectangle (4.2, 4);
+  \draw[bleuSecondaire, line width=1.5pt, rounded corners=6pt]
+    (0,0) rectangle (4.2, 4);
+  \node[font=\bfseries, text=bleuPrimaire] at (2.1, 3.6) {\texttt{and}};
+  \node[font=\small, text=grisTexte, align=center] at (2.1, 2.9)
+    {Les DEUX conditions};
+  \node[font=\small, text=grisTexte, align=center] at (2.1, 2.4)
+    {doivent être \textbf{True}};
+  \draw[bleuSecondaire!40, dashed] (0.2, 2.0) -- (4.0, 2.0);
+  \node[font=\ttfamily\tiny, text=vertCode] at (2.1, 1.5)
+    {True and True → True};
+  \node[font=\ttfamily\tiny, text=rougeImportant] at (2.1, 1.0)
+    {True and False → False};
+  \node[font=\ttfamily\tiny, text=rougeImportant] at (2.1, 0.5)
+    {False and False → False};
+
+  % or
+  \fill[bleuClair, rounded corners=6pt] (4.6, 0) rectangle (8.8, 4);
+  \draw[bleuSecondaire, line width=1.5pt, rounded corners=6pt]
+    (4.6,0) rectangle (8.8, 4);
+  \node[font=\bfseries, text=bleuPrimaire] at (6.7, 3.6) {\texttt{or}};
+  \node[font=\small, text=grisTexte, align=center] at (6.7, 2.9)
+    {AU MOINS UNE condition};
+  \node[font=\small, text=grisTexte, align=center] at (6.7, 2.4)
+    {doit être \textbf{True}};
+  \draw[bleuSecondaire!40, dashed] (4.8, 2.0) -- (8.6, 2.0);
+  \node[font=\ttfamily\tiny, text=vertCode] at (6.7, 1.5)
+    {True or False → True};
+  \node[font=\ttfamily\tiny, text=vertCode] at (6.7, 1.0)
+    {False or True → True};
+  \node[font=\ttfamily\tiny, text=rougeImportant] at (6.7, 0.5)
+    {False or False → False};
+
+  % not
+  \fill[bleuClair, rounded corners=6pt] (9.2, 0) rectangle (13.4, 4);
+  \draw[bleuSecondaire, line width=1.5pt, rounded corners=6pt]
+    (9.2,0) rectangle (13.4, 4);
+  \node[font=\bfseries, text=bleuPrimaire] at (11.3, 3.6) {\texttt{not}};
+  \node[font=\small, text=grisTexte, align=center] at (11.3, 2.9)
+    {INVERSE la valeur};
+  \node[font=\small, text=grisTexte, align=center] at (11.3, 2.4)
+    {du booléen};
+  \draw[bleuSecondaire!40, dashed] (9.4, 2.0) -- (13.2, 2.0);
+  \node[font=\ttfamily\tiny, text=rougeImportant] at (11.3, 1.5)
+    {not True → False};
+  \node[font=\ttfamily\tiny, text=vertCode] at (11.3, 1.0)
+    {not False → True};
+\end{tikzpicture}
+\end{center}
+
+\begin{codeblock}{Opérateurs logiques en action}
+age = 20
+a_un_billet = True
+est_vip = False
+
+# and — les deux conditions doivent etre vraies
+peut_entrer = age >= 18 and a_un_billet
+print(peut_entrer)   # True
+
+# or — au moins une condition doit etre vraie
+acces_special = est_vip or age >= 21
+print(acces_special)   # False
+
+# not — inverse la condition
+porte_fermee = False
+print(not porte_fermee)   # True (la porte est ouverte)
+
+# Combinaison de plusieurs operateurs
+a = 15
+resultat = (a > 10) and (a < 20) and (a % 2 != 0)
+print(resultat)   # True (15 est entre 10 et 20, et impair)
+\end{codeblock}
+
+% -----------------------------------------------------------
+\subsection{Les opérateurs d'affectation}
+
+Les opérateurs d'affectation permettent de \textbf{modifier une variable} de façon concise.
+
+\begin{codeblock}{Opérateurs d'affectation}
+score = 100
+
+score += 10    # score = score + 10   → 110
+print(score)
+
+score -= 20    # score = score - 20   → 90
+print(score)
+
+score *= 2     # score = score * 2    → 180
+print(score)
+
+score //= 3    # score = score // 3   → 60
+print(score)
+
+score **= 2    # score = score ** 2   → 3600
+print(score)
+
+score %= 100   # score = score % 100  → 0
+print(score)
+
+# Exemple concret : compter des points dans un jeu
+points = 0
+points += 50    # Ennemi vaincu
+points += 100   # Niveau termine
+points -= 10    # Vie perdue
+print(f"Score final : {points}")   # Score final : 140
+\end{codeblock}
+
+% -----------------------------------------------------------
+\subsection{Les opérateurs d'identité et d'appartenance}
+
+Python possède deux opérateurs spéciaux très utiles que l'on ne trouve pas dans tous les langages.
+
+\begin{codeblock}{is, is not, in, not in}
+# is / is not — verifie si deux variables pointent
+# vers le MEME objet en memoire
+a = None
+print(a is None)       # True
+print(a is not None)   # False
+
+# in / not in — verifie si une valeur est dans
+# une sequence (liste, chaine, etc.)
+fruits = ["pomme", "banane", "cerise"]
+print("banane" in fruits)       # True
+print("mangue" not in fruits)   # True
+
+# Avec les chaines
+message = "Bonjour tout le monde"
+print("monde" in message)    # True
+print("Python" in message)   # False
+
+# Exemple concret : vérifier un acces
+admins = ["Alice", "Bob", "Charlie"]
+utilisateur = "Alice"
+if utilisateur in admins:
+    print(f"{utilisateur} a les droits admin.")
+\end{codeblock}
+
+\begin{boiteRetenir}
+\texttt{in} est l'un des opérateurs les plus élégants de Python. Il permet de vérifier l'appartenance à une collection en une seule expression, là où d'autres langages nécessiteraient une boucle entière.
+\end{boiteRetenir}
+
+% -----------------------------------------------------------
+\subsection{La priorité des opérateurs}
+
+Comme en mathématiques, Python applique une \textbf{priorité} entre les opérateurs. De la plus haute à la plus basse :
+
+\begin{center}
+\begin{tikzpicture}
+  \foreach \prio/\op/\desc/\y in {
+    {1 — Priorité max}/{\texttt{**}}/{Puissance}/6.5,
+    {2}/{\texttt{+x, -x, \textasciitilde x}}/{Unaires}/5.5,
+    {3}/{\texttt{*, /, //, \%}}/{Multiplication, Division}/4.5,
+    {4}/{\texttt{+, -}}/{Addition, Soustraction}/3.5,
+    {5}/{\texttt{<, >, <=, >=, ==, !=}}/{Comparaisons}/2.5,
+    {6}/{\texttt{not}}/{NON logique}/1.5,
+    {7 — Priorité min}/{\texttt{and, or}}/{ET / OU logique}/0.5
+  }{
+    \fill[bleuClair] (0, \y-0.4) rectangle (13.5, \y+0.4);
+    \draw[bleuSecondaire!30] (0, \y-0.4) -- (13.5, \y-0.4);
+    \node[font=\small\bfseries, text=bleuPrimaire, anchor=west] at (0.2, \y)
+      {\prio};
+    \node[font=\ttfamily\small, text=bleuSecondaire] at (5.5, \y) {\op};
+    \node[font=\small, text=grisTexte, anchor=west] at (8.5, \y) {\desc};
+  }
+  \draw[bleuSecondaire, line width=1pt] (0, 0.1) rectangle (13.5, 7.0);
+\end{tikzpicture}
+\end{center}
+
+\begin{codeblock}{Priorité des opérateurs — exemples}
+# Sans parentheses — Python suit les priorites
+resultat = 2 + 3 * 4
+print(resultat)   # 14  (pas 20 — * avant +)
+
+# Avec parentheses — vous controlez l'ordre
+resultat = (2 + 3) * 4
+print(resultat)   # 20
+
+# Exemple complexe
+x = 10
+y = 3
+z = 2
+resultat = x + y ** z * 2 - 1
+# Ordre : y**z=9, 9*2=18, 10+18=28, 28-1=27
+print(resultat)   # 27
+
+# Conseil : toujours utiliser des parentheses
+# pour rendre le code lisible et eviter les erreurs
+resultat_clair = x + ((y ** z) * 2) - 1
+print(resultat_clair)   # 27
+\end{codeblock}
+
+\begin{boiteNote}
+En cas de doute sur la priorité, utilisez toujours des \textbf{parenthèses}. Elles rendent le code plus lisible et évitent les erreurs de calcul inattendues.
+\end{boiteNote}
+
+% -----------------------------------------------------------
+\subsection{Résumé du Chapitre 3}
+
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colback=bleuPrimaire,
+  colframe=bleuPrimaire,
+  arc=8pt,
+  left=15pt, right=15pt, top=10pt, bottom=10pt
+]
+  \color{white}
+  \textbf{\large\faClipboardList\quad Ce que j'ai appris dans ce chapitre :}
+
+  \vspace{0.5em}
+  \begin{itemize}[leftmargin=1.5em, itemsep=6pt]
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Les \textbf{opérateurs arithmétiques} : \texttt{+, -, *, /, //, \%, **}
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Les \textbf{opérateurs de comparaison} : \texttt{==, !=, <, >, <=, >=}
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Les \textbf{opérateurs logiques} : \texttt{and, or, not}
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Les \textbf{opérateurs d'affectation} : \texttt{+=, -=, *=, /=} \ldots
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Les \textbf{opérateurs spéciaux} : \texttt{is, is not, in, not in}
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      La \textbf{priorité des opérateurs} — et pourquoi les parenthèses sont vos meilleures alliées.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Ne jamais confondre \texttt{=} (assignation) et \texttt{==} (comparaison).
+  \end{itemize}
+
+  \vspace{0.5em}
+  \textit{\textcolor{bleuClair}{"La logique vous mènera d'un point A à un point B.
+  L'imagination vous mènera partout." — Albert Einstein}}
+\end{tcolorbox}
+
+% -----------------------------------------------------------
+\vspace{1cm}
+\begin{center}
+  \begin{tikzpicture}
+    \fill[bleuClair, rounded corners=6pt] (0,0) rectangle (16, 1.5);
+    \draw[bleuSecondaire, line width=1pt, rounded corners=6pt]
+      (0,0) rectangle (16, 1.5);
+    \node[font=\small, text=bleuPrimaire] at (8, 0.75) {%
+      \faLinkedin\quad \textbf{KETOTSA AMÉVI CLAUDE} — Mon apprentissage Python
+      \quad|\quad Chapitre 3 sur 34
+    };
+  \end{tikzpicture}
+\end{center}
+
+\end{document}
+
+
+
+
+
+
