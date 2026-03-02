@@ -9,10 +9,9 @@ Comprendre comment Python stocke et manipule l'information à travers :
 - Le typage dynamique
 - La conversion de types (casting)
 
-## 📂 Fichiers
+## 📂 Fichier
 
-- Python_Chapitre_2.tex → Code source LaTeX
-- Python_Chapitre_2.pdf → Version compilée
+Python_Chapitre_2.pdf
 
 ## 🧠 Compétences acquises
 
