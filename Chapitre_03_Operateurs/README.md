@@ -12,10 +12,9 @@ Comprendre les opérateurs en Python et leur rôle dans les calculs et la logiqu
 - Opérateurs d’identité et d’appartenance
 - Priorité des opérateurs
 
-## 📂 Fichiers
+## 📂 Fichier
 
-- chapitre3.tex → Code source LaTeX
-- chapitre3.pdf → Version compilée
+Python_chapitre_3.pdf
 
 ## 🧠 Compétences acquises
 
