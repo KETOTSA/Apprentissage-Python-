@@ -3,7 +3,6 @@
 Ce dépôt documente mon apprentissage progressif de Python,
 chapitre par chapitre, avec :
 
-- 📄 Code source LaTeX
 - 📘 Version PDF compilée
 - 💻 Scripts Python
 
