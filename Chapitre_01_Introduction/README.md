@@ -14,7 +14,7 @@ Ce chapitre couvre :
 
 ---
 
-## 📂 Fichiers
+## 📂 Fichier
 
 Python_Chapitre_1.pdf 
 
