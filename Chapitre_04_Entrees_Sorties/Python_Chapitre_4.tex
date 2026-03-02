@@ -1,0 +1,537 @@
+
+\documentclass[12pt, a4paper]{article}
+
+% ============================================================
+%  PACKAGES
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{mdframed}
+\usepackage{listings}
+\usepackage{fontawesome5}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, listings}
+
+\geometry{
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm
+}
+
+% ============================================================
+%  COULEURS
+% ============================================================
+\definecolor{bleuPrimaire}{HTML}{1A3C6E}
+\definecolor{bleuSecondaire}{HTML}{2E6DBD}
+\definecolor{bleuClair}{HTML}{EAF2FB}
+\definecolor{bleuAccent}{HTML}{4A90D9}
+\definecolor{grisTexte}{HTML}{2C3E50}
+\definecolor{grisClair}{HTML}{F4F6F9}
+\definecolor{vertCode}{HTML}{27AE60}
+\definecolor{orangeNote}{HTML}{E67E22}
+\definecolor{rougeImportant}{HTML}{E74C3C}
+\definecolor{violetSubtil}{HTML}{8E44AD}
+\definecolor{codebg}{HTML}{1E2A3A}
+\definecolor{codetext}{HTML}{ECF0F1}
+
+% ============================================================
+%  STYLE DE CODE
+% ============================================================
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small\color{codetext},
+  keywordstyle=\color{bleuAccent}\bfseries,
+  stringstyle=\color{vertCode},
+  commentstyle=\color{gray}\itshape,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  numbersep=8pt,
+  stepnumber=1,
+  showstringspaces=false,
+  breaklines=true,
+  frame=none,
+  tabsize=4,
+  captionpos=b,
+  morekeywords={print, input, type, int, float, str, bool, True, False, and, or, not}
+}
+
+% ============================================================
+%  EN-TÊTE ET PIED DE PAGE
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuPrimaire] (0,0) rectangle (\paperwidth, 1.1cm);
+  \end{tikzpicture}%
+  \color{white}\small\textbf{Cours Python — Mon Apprentissage}
+}
+\fancyhead[R]{\color{white}\small\textbf{Chapitre 4 : Entrées et Sorties}}
+\fancyfoot[C]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuClair] (0,0) rectangle (\paperwidth, 0.7cm);
+    \draw[bleuSecondaire, line width=1pt] (0, 0.7cm) -- (\paperwidth, 0.7cm);
+  \end{tikzpicture}%
+  \color{bleuPrimaire}\small\thepage
+}
+
+% ============================================================
+%  STYLE DES TITRES
+% ============================================================
+\titleformat{\section}{%
+  \color{bleuPrimaire}\Large\bfseries
+}{}{0em}{}[\vspace{-0.3em}\textcolor{bleuSecondaire}{\rule{\linewidth}{1.5pt}}]
+
+\titleformat{\subsection}{%
+  \color{bleuSecondaire}\large\bfseries
+}{}{0em}{}
+
+\titlespacing{\section}{0pt}{1.5em}{0.8em}
+\titlespacing{\subsection}{0pt}{1em}{0.5em}
+
+% ============================================================
+%  BOÎTES PERSONNALISÉES
+% ============================================================
+\newtcolorbox{boiteRetenir}{
+  enhanced, breakable,
+  colback=bleuClair, colframe=bleuSecondaire,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faLightbulb\quad À retenir},
+  fonttitle=\bfseries\color{bleuPrimaire},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=bleuClair, colframe=bleuSecondaire}
+}
+
+\newtcolorbox{boiteNote}{
+  enhanced, breakable,
+  colback=orange!8, colframe=orangeNote,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faExclamationTriangle\quad Note importante},
+  fonttitle=\bfseries\color{orangeNote},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=orange!8, colframe=orangeNote}
+}
+
+\newtcolorbox{boiteErreur}{
+  enhanced, breakable,
+  colback=red!5, colframe=rougeImportant,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faBug\quad Erreur fréquente},
+  fonttitle=\bfseries\color{rougeImportant},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=red!5, colframe=rougeImportant}
+}
+
+% NOUVELLE BOÎTE — Difficultés et subtilités
+\newtcolorbox{boiteDifficulte}{
+  enhanced, breakable,
+  colback=violetSubtil!8, colframe=violetSubtil,
+  arc=4pt, boxrule=1.5pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  title={\faBrain\quad Ce qui m'a résisté},
+  fonttitle=\bfseries\color{violetSubtil},
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=violetSubtil!8, colframe=violetSubtil}
+}
+
+\newtcblisting{codeblock}[1]{
+  enhanced, breakable,
+  listing only,
+  listing style=pythonstyle,
+  colback=codebg, colframe=bleuSecondaire,
+  arc=6pt, boxrule=1pt,
+  title={\faCode\quad #1},
+  fonttitle=\bfseries\color{white}\small,
+  attach boxed title to top left={yshift=-2mm, xshift=5mm},
+  boxed title style={colback=bleuSecondaire, colframe=bleuSecondaire},
+  left=6pt, right=6pt, top=8pt, bottom=6pt
+}
+
+% ============================================================
+%  PAGE DE TITRE
+% ============================================================
+\begin{document}
+
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[bleuPrimaire] (current page.north west) rectangle
+      ([yshift=-10cm] current page.north east);
+    \fill[bleuSecondaire] ([yshift=-10cm] current page.north west) rectangle
+      ([yshift=-11cm] current page.north east);
+    \fill[grisClair] ([yshift=-11cm] current page.north west) rectangle
+      (current page.south east);
+    \fill[bleuAccent, opacity=0.15]
+      ([xshift=12cm, yshift=-5cm] current page.north west) circle (5cm);
+    \fill[bleuAccent, opacity=0.08]
+      ([xshift=15cm, yshift=-3cm] current page.north west) circle (3cm);
+  \end{tikzpicture}
+
+  \vspace*{2cm}
+
+  \begin{center}
+    {\fontsize{14}{16}\selectfont\color{bleuClair}
+      \textbf{MON APPRENTISSAGE — SERIES PYTHON}}\\[0.5cm]
+    {\fontsize{42}{48}\selectfont\color{white}\textbf{Python}}\\[0.2cm]
+    {\fontsize{20}{24}\selectfont\color{bleuAccent}
+      \textbf{Du zéro à l'expert}}\\[0.3cm]
+    \textcolor{white!70}{\rule{8cm}{0.5pt}}\\[0.5cm]
+    {\fontsize{16}{20}\selectfont\color{white}
+      \textbf{Chapitre 4 — Les Entrées et Sorties}}\\[0.2cm]
+    {\fontsize{13}{16}\selectfont\color{bleuClair}
+      \textit{Faire parler Python — et lui faire écouter}}
+  \end{center}
+
+  \vspace{3.5cm}
+
+  \begin{center}
+    \begin{tikzpicture}
+      \fill[bleuClair, rounded corners=8pt] (0,0) rectangle (12cm, 3.2cm);
+      \draw[bleuSecondaire, line width=1.5pt, rounded corners=8pt]
+        (0,0) rectangle (12cm, 3.2cm);
+      \node[anchor=west] at (0.4, 2.5)
+        {\color{bleuPrimaire}\small\textbf{Auteur :}};
+      \node[anchor=west] at (0.4, 1.9)
+        {\color{grisTexte}\large\textbf{KETOTSA AMÉVI CLAUDE}};
+      \node[anchor=west] at (0.4, 1.2)
+        {\color{bleuPrimaire}\small\textbf{Date de publication :}};
+      \node[anchor=west] at (0.4, 0.6)
+        {\color{grisTexte}\small\today};
+    \end{tikzpicture}
+  \end{center}
+
+  \vfill
+  \begin{center}
+    \color{bleuSecondaire}\small\faLinkedin\quad
+    \textit{Publié dans le cadre de mon parcours d'apprentissage Python}
+  \end{center}
+\end{titlepage}
+
+% ============================================================
+%  TABLE DES MATIÈRES
+% ============================================================
+\newpage
+\tableofcontents
+\newpage
+
+% ============================================================
+%  CHAPITRE 4
+% ============================================================
+
+\section*{\faPython\quad Chapitre 4 — Les Entrées et Sorties}
+\addcontentsline{toc}{section}{Chapitre 4 — Les Entrées et Sorties}
+
+\vspace{0.3cm}
+
+\begin{boiteRetenir}
+Un programme qui ne communique pas ne sert à rien. Dans ce chapitre, j'apprends comment Python \textbf{affiche des informations} à l'utilisateur avec \texttt{print()}, et comment il \textbf{reçoit des données} avec \texttt{input()}. C'est ici que les programmes commencent à véritablement \textit{vivre}.
+\end{boiteRetenir}
+
+\vspace{0.5cm}
+
+% -----------------------------------------------------------
+\subsection{La fonction print() — Afficher des données}
+
+\texttt{print()} est la fonction la plus utilisée en Python. Elle affiche n'importe quelle valeur dans le terminal.
+
+\begin{codeblock}{print() — Les bases}
+# Afficher du texte simple
+print("Bonjour tout le monde !")
+
+# Afficher plusieurs valeurs separees par une virgule
+print("Nom :", "Alice", "| Age :", 25)
+# → Nom : Alice | Age : 25
+
+# Afficher une variable
+prenom = "Bob"
+age = 30
+print(prenom)
+print(age)
+
+# Afficher plusieurs variables ensemble
+print(prenom, age)
+# → Bob 30
+\end{codeblock}
+
+% -----------------------------------------------------------
+\subsection{Les paramètres avancés de print()}
+
+\texttt{print()} possède des paramètres cachés qui le rendent très puissant.
+
+\begin{codeblock}{Paramètres sep et end}
+# sep — definit le separateur entre les valeurs
+# (par defaut : un espace)
+print("Paris", "Lyon", "Marseille", sep=" | ")
+# → Paris | Lyon | Marseille
+
+print("02", "03", "2026", sep="-")
+# → 02-03-2026
+
+print("A", "B", "C", sep="")
+# → ABC
+
+# end — definit ce qui s'affiche a la fin
+# (par defaut : saut de ligne \n)
+print("Chargement", end="")
+print("...")
+# → Chargement...
+
+print("Etape 1", end=" → ")
+print("Etape 2", end=" → ")
+print("Etape 3")
+# → Etape 1 → Etape 2 → Etape 3
+\end{codeblock}
+
+\begin{boiteDifficulte}
+Le paramètre \texttt{end} m'a surpris au début. Je pensais que \texttt{print()} ajoutait toujours un retour à la ligne — c'est son comportement \textbf{par défaut}, mais on peut totalement le contrôler. Comprendre que \texttt{print("texte")} est en réalité \texttt{print("texte", end="\textbackslash n")} a changé ma façon de voir la fonction.
+\end{boiteDifficulte}
+
+% -----------------------------------------------------------
+\subsection{Le formatage des chaînes}
+
+Python offre trois façons de formater du texte. La méthode moderne et recommandée est le \textbf{f-string}.
+
+\begin{codeblock}{Les 3 méthodes de formatage}
+prenom = "Alice"
+age = 25
+taille = 1.68
+
+# Methode 1 — Concatenation (ancienne, deconseillee)
+print("Je m'appelle " + prenom + " et j'ai " + str(age) + " ans.")
+
+# Methode 2 — format() (intermediaire)
+print("Je m'appelle {} et j'ai {} ans.".format(prenom, age))
+
+# Methode 3 — f-string (moderne, recommandee ✅)
+print(f"Je m'appelle {prenom} et j'ai {age} ans.")
+# → Je m'appelle Alice et j'ai 25 ans.
+\end{codeblock}
+
+\begin{codeblock}{f-strings — Puissance et précision}
+prix = 19.9999
+pi = 3.14159265
+
+# Arrondir les decimales dans un f-string
+print(f"Prix : {prix:.2f} €")     # → Prix : 20.00 €
+print(f"Pi ≈ {pi:.4f}")           # → Pi ≈ 3.1416
+
+# Aligner du texte sur une largeur fixe
+print(f"{'Produit':<15} {'Prix':>8}")
+print(f"{'Café':<15} {2.50:>8.2f}")
+print(f"{'Croissant':<15} {1.20:>8.2f}")
+# →
+# Produit              Prix
+# Cafe                 2.50
+# Croissant            1.20
+
+# Expressions dans les f-strings
+a = 10
+b = 3
+print(f"{a} x {b} = {a * b}")   # → 10 x 3 = 30
+print(f"Majeur : {a >= 18}")    # → Majeur : False
+\end{codeblock}
+
+\begin{boiteDifficulte}
+La syntaxe \texttt{:\,.2f} dans les f-strings m'a demandé du temps. Le \texttt{.2f} signifie : \textit{"affiche ce nombre flottant avec exactement 2 décimales"}. Le \texttt{<} et \texttt{>} pour l'alignement m'ont aussi surpris — mais une fois compris, c'est redoutablement pratique pour créer des tableaux dans le terminal.
+\end{boiteDifficulte}
+
+% -----------------------------------------------------------
+\subsection{Les caractères spéciaux dans les chaînes}
+
+Python utilise des \textbf{séquences d'échappement} pour représenter des caractères spéciaux.
+
+\begin{center}
+\begin{tikzpicture}
+  \foreach \car/\desc/\y in {
+    {\textbackslash n}/{Saut de ligne}/5.5,
+    {\textbackslash t}/{Tabulation horizontale}/4.5,
+    {\textbackslash r}/{Retour chariot}/3.5,
+    {\textbackslash\textbackslash}/{Antislash littéral}/2.5,
+    {\textbackslash "}/{Guillemet double dans une chaîne}/1.5,
+    {\textbackslash '}/{Guillemet simple dans une chaîne}/0.5
+  }{
+    \fill[bleuClair] (0, \y-0.4) rectangle (13.5, \y+0.4);
+    \draw[bleuSecondaire!30] (0, \y-0.4) -- (13.5, \y-0.4);
+    \node[font=\ttfamily\bfseries\small, text=bleuSecondaire,
+      anchor=west] at (0.3, \y) {\car};
+    \node[font=\small, text=grisTexte, anchor=west] at (4.0, \y) {\desc};
+  }
+  \draw[bleuSecondaire, line width=1pt] (0, 0.1) rectangle (13.5, 6.0);
+\end{tikzpicture}
+\end{center}
+
+\begin{codeblock}{Caractères spéciaux en action}
+# Saut de ligne \n
+print("Ligne 1\nLigne 2\nLigne 3")
+
+# Tabulation \t
+print("Nom\tAge\tVille")
+print("Alice\t25\tParis")
+print("Bob\t30\tLyon")
+
+# Chemin de fichier Windows — attention au \
+# ❌ Mauvais :  print("C:\nouveau\fichier.txt")
+# ✅ Solution 1 : doubler les antislashs
+print("C:\\nouveau\\fichier.txt")
+# ✅ Solution 2 : raw string avec r""
+print(r"C:\nouveau\fichier.txt")
+\end{codeblock}
+
+% -----------------------------------------------------------
+\subsection{La fonction input() — Recevoir des données}
+
+\texttt{input()} permet au programme de \textbf{demander une information} à l'utilisateur. Il s'arrête et attend que l'utilisateur tape quelque chose et appuie sur Entrée.
+
+\begin{codeblock}{input() — Les bases}
+# Demander une information
+prenom = input("Quel est ton prenom ? ")
+print(f"Bonjour, {prenom} !")
+
+# input() retourne TOUJOURS une chaine (str)
+age_texte = input("Quel est ton age ? ")
+print(type(age_texte))   # <class 'str'>
+
+# Convertir pour faire des calculs
+age = int(input("Quel est ton age ? "))
+annee_naissance = 2026 - age
+print(f"Tu es ne(e) en {annee_naissance}.")
+\end{codeblock}
+
+\begin{codeblock}{Programme interactif complet}
+# Mini programme de presentation
+print("=" * 40)
+print("   GENERATEUR DE PRESENTATION")
+print("=" * 40)
+
+prenom = input("\nTon prenom : ")
+age    = int(input("Ton age : "))
+ville  = input("Ta ville : ")
+metier = input("Ton metier : ")
+
+print("\n" + "=" * 40)
+print(f"  Bonjour, je m'appelle {prenom}.")
+print(f"  J'ai {age} ans et j'habite a {ville}.")
+print(f"  Je travaille comme {metier}.")
+print(f"  Dans {65 - age} ans, je serai a la retraite !")
+print("=" * 40)
+\end{codeblock}
+
+\begin{boiteDifficulte}
+La subtilité qui m'a le plus piégé : \texttt{input()} retourne \textbf{toujours} une chaîne de caractères — même si l'utilisateur tape \texttt{25}. J'ai eu une erreur en essayant d'additionner directement le résultat d'un \texttt{input()} avec un nombre. Python ne convertit pas automatiquement. Il faut \textbf{toujours} encadrer avec \texttt{int()} ou \texttt{float()} si on veut faire des calculs. Cette règle semble simple, mais elle m'a coûté plusieurs minutes de débogage avant de comprendre.
+\end{boiteDifficulte}
+
+% -----------------------------------------------------------
+\subsection{Gérer les erreurs de saisie}
+
+Que se passe-t-il si l'utilisateur tape du texte alors qu'on attend un nombre ?
+
+\begin{codeblock}{Erreur classique et protection}
+# ❌ Si l'utilisateur tape "abc" au lieu d'un nombre
+# int(input(...)) va lever une erreur : ValueError
+
+# ✅ Protection avec try/except (apercu — chapitre 19)
+try:
+    age = int(input("Ton age : "))
+    print(f"Dans 10 ans, tu auras {age + 10} ans.")
+except ValueError:
+    print("Erreur : veuillez entrer un nombre entier.")
+
+# ✅ Validation simple avec isdigit()
+saisie = input("Entrez un nombre : ")
+if saisie.isdigit():
+    nombre = int(saisie)
+    print(f"Votre nombre au carre : {nombre ** 2}")
+else:
+    print("Ce n'est pas un nombre valide.")
+\end{codeblock}
+
+\begin{boiteNote}
+La gestion complète des erreurs sera couverte au \textbf{Chapitre 19}. Mais il est important de savoir dès maintenant que \texttt{int(input())} peut \textit{planter} si l'utilisateur ne coopère pas. Un bon programme anticipe toujours les erreurs humaines.
+\end{boiteNote}
+
+% -----------------------------------------------------------
+\subsection{Ce qui m'a le plus surpris dans ce chapitre}
+
+\begin{boiteDifficulte}
+\textbf{Trois subtilités qui m'ont marqué :}
+
+\vspace{0.5em}
+\textbf{1. La multiplication de chaînes.}
+En découvrant \texttt{print("=" * 40)}, j'ai réalisé qu'on pouvait multiplier une chaîne par un nombre en Python. C'est élégant et inattendu — \texttt{"=" * 40} produit une ligne de 40 signes égal. Aucun autre langage que je connaisse ne fait ça aussi naturellement.
+
+\vspace{0.5em}
+\textbf{2. Les f-strings sont des expressions, pas juste du texte.}
+On peut écrire \texttt{f"\{2 + 2\}"} et obtenir \texttt{4}. On peut appeler des fonctions, faire des calculs, tout ça à l'intérieur des accolades. Ce n'est pas juste du formatage — c'est du Python à part entière, intégré dans du texte.
+
+\vspace{0.5em}
+\textbf{3. Le \texttt{r""} pour les raw strings.}
+Écrire un chemin Windows comme \texttt{C:\textbackslash Users\textbackslash fichier} provoque des erreurs à cause des antislashs. La solution \texttt{r"C:\textbackslash Users\textbackslash fichier"} désactive l'interprétation des séquences d'échappement. Un détail technique qui peut faire perdre beaucoup de temps si on ne le connaît pas.
+\end{boiteDifficulte}
+
+% -----------------------------------------------------------
+\subsection{Résumé du Chapitre 4}
+
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colback=bleuPrimaire,
+  colframe=bleuPrimaire,
+  arc=8pt,
+  left=15pt, right=15pt, top=10pt, bottom=10pt
+]
+  \color{white}
+  \textbf{\large\faClipboardList\quad Ce que j'ai appris dans ce chapitre :}
+
+  \vspace{0.5em}
+  \begin{itemize}[leftmargin=1.5em, itemsep=6pt]
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      \texttt{print()} affiche n'importe quelle valeur — avec \texttt{sep} et \texttt{end} pour contrôler la mise en forme.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Les \textbf{f-strings} sont la méthode moderne pour formater du texte — puissantes et lisibles.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      \texttt{:\,.2f} dans un f-string contrôle la précision des décimales.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Les \textbf{séquences d'échappement} : \texttt{\textbackslash n}, \texttt{\textbackslash t}, \texttt{r""} pour les raw strings.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      \texttt{input()} reçoit toujours une \texttt{str} — toujours convertir avec \texttt{int()} ou \texttt{float()}.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      Anticiper les erreurs de saisie avec \texttt{isdigit()} ou \texttt{try/except}.
+    \item[\textcolor{bleuAccent}{\faCheckCircle}]
+      \texttt{"=" * 40} — multiplier une chaîne par un entier est une des élégances uniques de Python.
+  \end{itemize}
+
+  \vspace{0.5em}
+  \textit{\textcolor{bleuClair}{"Un programme qui ne communique pas avec l'humain
+  n'est qu'une boîte noire. L'entrée et la sortie, c'est le dialogue."}}
+\end{tcolorbox}
+
+% -----------------------------------------------------------
+\vspace{1cm}
+\begin{center}
+  \begin{tikzpicture}
+    \fill[bleuClair, rounded corners=6pt] (0,0) rectangle (16, 1.5);
+    \draw[bleuSecondaire, line width=1pt, rounded corners=6pt]
+      (0,0) rectangle (16, 1.5);
+    \node[font=\small, text=bleuPrimaire] at (8, 0.75) {%
+      \faLinkedin\quad \textbf{KETOTSA AMÉVI CLAUDE} — Mon apprentissage Python
+      \quad|\quad Chapitre 4 sur 34
+    };
+  \end{tikzpicture}
+\end{center}
+
+\end{document}
