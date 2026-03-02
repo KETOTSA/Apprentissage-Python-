@@ -14,7 +14,8 @@ chapitre par chapitre, avec :
 - ✅ Chapitre 01 – Introduction à Python
 - ✅ Chapitre 02 – Variables et types de données 
 - ✅ Chapitre 03 - Les opérateurs 
-- 🔄 Chapitre 04 - En cours 
+- ✅ Chapitre 04 - Les Entrées et Sorties 
+- 🔄 Chapitre 5 - en cours 
 ---
 
 ## 🎯 Objectif
