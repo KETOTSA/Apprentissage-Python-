@@ -12,10 +12,9 @@ Comprendre comment interagir avec l’utilisateur en Python :
 - La fonction input() – recevoir des données
 - La gestion des erreurs de saisie
 
-## 📂 Fichiers
+## 📂 Fichier
 
-- Python_Chapitre_4.tex → Code source LaTeX
-- Python_Chapitre_4.pdf → Version compilée
+Python_Chapitre_4.pdf
 
 ## 🧠 Compétences acquises
 
