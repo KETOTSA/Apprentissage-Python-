@@ -15,8 +15,10 @@ chapitre par chapitre, avec :
 - ✅ Chapitre 03 - Les opérateurs 
 - ✅ Chapitre 04 - Les Entrées et Sorties 
 - ✅ Chapitre 5 - Les Conditions
-- ✅ Chapitre 6 - Les Boucles 
-- 🔄 Chapitre 7  - en cours
+- ✅ Chapitre 6 - Les Boucles
+- ✅ Chapitre 7 - Les chaînes de caractères
+- ✅ Chapitre 8 - Listes
+- 🔄 Chapitre 9 - en cours
 ---
 
 ## 🎯 Objectif
