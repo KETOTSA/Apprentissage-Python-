@@ -18,7 +18,8 @@ chapitre par chapitre, avec :
 - ✅ Chapitre 6 - Les Boucles
 - ✅ Chapitre 7 - Les chaînes de caractères
 - ✅ Chapitre 8 - Listes
-- 🔄 Chapitre 9 - en cours
+- ✅ Chapitre 9 - Tuples
+- 🔄 Chapitre 10 - en cours
 ---
 
 ## 🎯 Objectif
