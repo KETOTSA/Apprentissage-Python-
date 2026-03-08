@@ -19,7 +19,8 @@ chapitre par chapitre, avec :
 - ✅ Chapitre 7 - Les chaînes de caractères
 - ✅ Chapitre 8 - Listes
 - ✅ Chapitre 9 - Tuples
-- 🔄 Chapitre 10 - en cours
+- ✅ Chapitre 10 - Dictionnaires
+- 🔄 Chapitre 11 - en cours
 ---
 
 ## 🎯 Objectif
