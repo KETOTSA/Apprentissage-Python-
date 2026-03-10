@@ -20,7 +20,9 @@ chapitre par chapitre, avec :
 - ✅ Chapitre 8 - Listes
 - ✅ Chapitre 9 - Tuples
 - ✅ Chapitre 10 - Dictionnaires
-- 🔄 Chapitre 11 - en cours
+- ✅ Chapitre 11 - Sets
+- ✅ Chapitre 12 - Fonctions
+- 🔄 Chapitre 13 - en cours
 ---
 
 ## 🎯 Objectif
