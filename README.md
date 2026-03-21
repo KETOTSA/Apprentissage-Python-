@@ -22,7 +22,18 @@ chapitre par chapitre, avec :
 - ✅ Chapitre 10 - Dictionnaires
 - ✅ Chapitre 11 - Sets
 - ✅ Chapitre 12 - Fonctions
-- 🔄 Chapitre 13 - en cours
+- ✅ Chapitre 13 : Fonctions Avancées
+- ✅ Chapitre 14 : Modules et Packages
+- ✅ Chapitre 15 : Introduction à la POO
+- ✅ Chapitre 16 : Héritage et Polymorphisme
+- ✅ Chapitre 17 : Gestion des Erreurs
+- ✅ Chapitre 18 : Fichiers et I/O
+- ✅ Chapitre 19 : Expressions Régulières
+- ✅ Chapitre 20 : Itérateurs et Générateurs
+- ✅ Chapitre 21 : Concurrence et Parallélisme
+- ✅ Chapitre 22 : Tests et Qualités du Code
+- ✅ Chapitre 23 : NumpPy et Pandas
+- 🔄 Chapitre 24 - en cours
 ---
 
 ## 🎯 Objectif
